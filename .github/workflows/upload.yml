@@ -1,0 +1,2 @@
+name: Upload
+  run: aws s3 sync foldername s3://bes-tamanu-ips-public/viewer/
