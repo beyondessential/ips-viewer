@@ -15,8 +15,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Build app
-        run: yarn build
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: yarn
+      - run: yarn build
         
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
