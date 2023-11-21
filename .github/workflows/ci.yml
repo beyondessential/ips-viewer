@@ -16,14 +16,7 @@ jobs:
     name: Build and upload
     runs-on: ubuntu-latest
 
-    steps:     
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          aws-region: ap-southeast-2
-          role-to-assume: arn:aws:iam::143295493206:role/gha-ips-s3-viewer
-          role-session-name: GHA@IPS=Viewer
-
+    steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
@@ -32,8 +25,12 @@ jobs:
       - run: yarn
       - run: yarn build
 
-      - name: List files in the repository
-        run: ls
-      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-region: ap-southeast-2
+          role-to-assume: arn:aws:iam::143295493206:role/gha-ips-s3-viewer
+          role-session-name: GHA@IPS=Viewer
+
       - name: Upload
         run: aws s3 sync build s3://bes-tamanu-ips-public/viewer/
