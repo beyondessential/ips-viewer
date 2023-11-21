@@ -654,14 +654,15 @@ const CONFIG = {
 export const useIPS = async () => {
   return useQuery(
     [CONFIG.filePath],
-    () => {
-      const client = new AWS.S3({ region: CONFIG.region });
-      return client.send(
+    async () => {
+      const client = new AWS.S3Client({ region: CONFIG.region });
+      const response = await client.send(
         new AWS.GetObjectCommand({
           Bucket: CONFIG.bucketName,
           Key: CONFIG.filePath,
         })
       );
+      return response;
     },
     { enabled: !!CONFIG.filePath }
   );
