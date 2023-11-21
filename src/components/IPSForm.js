@@ -85,6 +85,7 @@ export const IPSForm = ({ hasError, ipsPayload, onValidate }) => {
     );
     console.log('patient', patient);
     console.log('enteredDateOfBirth', enteredDateOfBirth)
+    console.log('patient?.resource?.birthDate', patient?.resource?.birthDate);
     if (patient?.resource?.birthDate === enteredDateOfBirth) {
       onValidate();
       return;

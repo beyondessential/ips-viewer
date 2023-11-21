@@ -1,6 +1,5 @@
 import { useQuery } from "react-query";
-import * as AWS from "@aws-sdk/client-s3";
-// import { request } from "./request";
+import { request } from "./request";
 
 // const SAMPLE_RESULT = {
 //   id: "45d1d8bc-5df8-424d-8454-5277b455d96c",
@@ -644,28 +643,10 @@ import * as AWS from "@aws-sdk/client-s3";
 //   ],
 // };
 
-const CONFIG = {
-  region: "ap-southeast-2",
-  bucketName: "bes-tamanu-ips-public",
-  bucketPath: "ips-demo",
-  filePath: "IPS_58170297-d96b-45b6-bb27-ba9522b87be2_1700456070120.json",
-};
-
-export const useIPS = async () => {
-  return useQuery(
-    [CONFIG.filePath],
-    async () => {
-      const client = new AWS.S3Client({ region: CONFIG.region });
-      const response = await client.send(
-        new AWS.GetObjectCommand({
-          Bucket: CONFIG.bucketName,
-          Key: CONFIG.filePath,
-        })
-      );
-      return response;
-    },
-    { enabled: !!CONFIG.filePath }
-  );
-
+export const useIPS = ({ url }) => {
+  if (!url) {
+    url = 'https://public.tamanu.io/ips-demo/IPS_58170297-d96b-45b6-bb27-ba9522b87be2_1700456070120.json';
+  }
+  return useQuery([url], () => request(url), { enabled: !!url });
   // return { data: SAMPLE_RESULT };
 };
