@@ -36,4 +36,4 @@ jobs:
         run: ls
       
       - name: Upload
-        run: aws s3 sync viewer s3://bes-tamanu-ips-public/viewer/
+        run: aws s3 sync build s3://bes-tamanu-ips-public/viewer/

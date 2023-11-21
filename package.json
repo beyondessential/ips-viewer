@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "PUBLIC_URL=/viewer react-scripts build && rm -rf viewer && mv build viewer",
+    "build": "react-scripts build",
     "test": "react-scripts test"
   },
   "eslintConfig": {
