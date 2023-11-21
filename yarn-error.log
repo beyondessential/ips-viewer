@@ -1,0 +1,72 @@
+Arguments: 
+  /Users/chris/.nvm/versions/node/v16.16.0/bin/node /Users/chris/.nvm/versions/node/v16.16.0/bin/yarn
+
+PATH: 
+  /Library/PostgreSQL/14/bin:/Users/chris/Library/Android/sdk/emulator:/Users/chris/Library/Android/sdk/platform-tools/:/Users/chris/Library/Android/sdk:/opt/homebrew/opt/openjdk@11/bin:/Users/chris/.ebcli-virtual-env/executables:/Users/chris/.nvm/versions/node/v16.16.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/chris/.cargo/bin:/Users/chris/.ebcli-virtual-env/executables:/opt/homebrew/bin/
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.16.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  SyntaxError: /Users/chris/bes/projects/ips-viewer/package.json: Unexpected token } in JSON at position 575
+      at JSON.parse (<anonymous>)
+      at /Users/chris/.nvm/versions/node/v16.16.0/lib/node_modules/yarn/lib/cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (/Users/chris/.nvm/versions/node/v16.16.0/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /Users/chris/.nvm/versions/node/v16.16.0/lib/node_modules/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "ips-viewer",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+      "@material-ui/core": "^4.11.4",
+      "@material-ui/icons": "^4.11.2",
+      "axios": "^0.21.1",
+      "date-fns": "^2.22.1",
+      "html-react-parser": "^1.2.8",
+      "prettier": "^2.3.1",
+      "prop-types": "^15.7.2",
+      "react": "^17.0.2",
+      "react-dom": "^17.0.2",
+      "react-query": "^3.17.2",
+      "react-scripts": "5.0.1",
+      "styled-components": "^5.3.0"
+    },
+    "scripts": {
+      "start": "react-scripts start",
+      "build": "react-scripts build",
+      "test": "react-scripts test",
+    },
+    "eslintConfig": {
+      "extends": [
+        "react-app",
+        "react-app/jest"
+      ]
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
