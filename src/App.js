@@ -9,12 +9,13 @@ export const App = () => {
   return (
     <>
       <NavBar />
-      <Router>
+      {/* <Router>
         <Routes>
           <Route path="/" element={<IPSForm />} />
           <Route path="jsonViewer/" element={<IPSResult />} />
         </Routes>
-      </Router>
+      </Router> */}
+      <IPSForm />
     </>
   );
 };
