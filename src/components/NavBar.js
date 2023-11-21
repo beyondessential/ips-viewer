@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import MuiContainer from "@material-ui/core/Container";
 import { TamanuLogo } from "../assets/TamanuLogo";
-import { NAV_BAR_HEIGHT } from "../constants/styles";
 
 const StyledTamanuLogo = styled(TamanuLogo)`
   position: absolute;
