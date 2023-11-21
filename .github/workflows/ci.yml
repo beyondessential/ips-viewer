@@ -6,6 +6,9 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write # OIDC token for AWS
+      
 jobs:
   build:
     name: Build and upload
