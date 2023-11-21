@@ -644,7 +644,7 @@ import { request } from "./request";
 // };
 
 export const useIPS = ({ url }) => {
-  url = 's3://bes-tamanu-ips-public/ips-demo/IPS_58170297-d96b-45b6-bb27-ba9522b87be2_1700456070120.json';
+  url = 's3://bes-tamanu-dev-referencedata/ips-demo/IPS_58170297-d96b-45b6-bb27-ba9522b87be2_1700456070120.json';
   return useQuery([url], () => request(url), { enabled: !!url });
   // return { data: SAMPLE_RESULT };
 };

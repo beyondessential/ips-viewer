@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
 import PropTypes from "prop-types";
 import MuiButton from "@material-ui/core/Button";
-import styled from "styled-components";
 import { format, parseISO } from "date-fns";
 
 import { DateField } from "./DateField";
 import { backgroundImage } from "../images";
 import { useIPS } from "../api/useIPS";
+import { LoadingIndicator } from "./LoadingIndicator";
 
 const StyledErrorMessage = styled.span`
   color: red;
@@ -105,7 +106,7 @@ export const IPSForm = () => {
   };
 
   if (isLoading) {
-    return <span>Loading...</span>
+    return <LoadingIndicator />;
   }
 
   return (

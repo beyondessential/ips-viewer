@@ -8,6 +8,7 @@ import DownloadIcon from '@material-ui/icons/GetApp';
 import CopyIcon from '@material-ui/icons/FileCopy';
 
 import { useIPS } from "../api/useIPS";
+import { LoadingIndicator } from "./LoadingIndicator";
 
 const StyledCopyButton = styled(Button)`
   float: right;
@@ -46,7 +47,7 @@ export const IPSResult = () => {
   }, [urlBase64]);
 
   if (isLoading) {
-    return <span>Loading...</span>;
+    return <LoadingIndicator />;
   }
 
   return (
