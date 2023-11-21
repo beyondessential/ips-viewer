@@ -15,6 +15,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Build app
+        run: yarn build
+        
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
