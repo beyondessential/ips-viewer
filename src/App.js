@@ -3,12 +3,12 @@ import React from "react";
 
 import { IPSForm } from "./components/IPSForm";
 // import { IPSResult } from "./components/IPSResult";
-import { NavBar } from "./components/NavBar";
+// import { NavBar } from "./components/NavBar";
 
 export const App = () => {
   return (
     <>
-      <NavBar />
+      {/* <NavBar /> */}
       {/* <Router>
         <Routes>
           <Route path="/" element={<IPSForm />} />
