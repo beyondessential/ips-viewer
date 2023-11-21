@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React from "react";
 import ReactJson from "react-json-view";
 import styled from "styled-components";
 import { saveAs } from "file-saver";
 import Button from "@material-ui/core/Button";
-import DownloadIcon from '@material-ui/icons/GetApp';
-import CopyIcon from '@material-ui/icons/FileCopy';
-
-import { useIPS } from "../api/useIPS";
-import { LoadingIndicator } from "./LoadingIndicator";
+import DownloadIcon from "@material-ui/icons/GetApp";
+import CopyIcon from "@material-ui/icons/FileCopy";
 
 const StyledCopyButton = styled(Button)`
   float: right;
@@ -35,21 +31,7 @@ const StyledContainer = styled.div`
   margin-right: 10px;
 `;
 
-export const IPSResult = () => {
-  const [url, setUrl] = useState(null);
-  const { url: urlBase64 } = useParams();
-  const { data: patientJson, isLoading } = useIPS({ url });
-
-  useEffect(() => {
-    if (urlBase64) {
-      setUrl(atob(urlBase64));
-    }
-  }, [urlBase64]);
-
-  if (isLoading) {
-    return <LoadingIndicator />;
-  }
-
+export const IPSResult = ({ ipsPayload }) => {
   return (
     <>
       <StyledButtonsContainer>
@@ -57,7 +39,7 @@ export const IPSResult = () => {
           variant="contained"
           color="primary"
           onClick={() => {
-            const blob = new Blob([JSON.stringify(patientJson)], {
+            const blob = new Blob([JSON.stringify(ipsPayload)], {
               type: "application/json;charset=utf-8",
             });
             saveAs(blob, "IPS");
@@ -70,7 +52,7 @@ export const IPSResult = () => {
           variant="outlined"
           color="primary"
           onClick={() => {
-            navigator.clipboard.writeText(JSON.stringify(patientJson));
+            navigator.clipboard.writeText(JSON.stringify(ipsPayload));
           }}
         >
           <CopyIcon />
@@ -79,7 +61,7 @@ export const IPSResult = () => {
       </StyledButtonsContainer>
 
       <StyledContainer>
-        <ReactJson src={patientJson} />
+        <ReactJson src={ipsPayload} />
       </StyledContainer>
     </>
   );

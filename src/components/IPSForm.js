@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import MuiButton from "@material-ui/core/Button";
@@ -7,8 +6,6 @@ import { format, parseISO } from "date-fns";
 
 import { DateField } from "./DateField";
 import { backgroundImage } from "../images";
-import { useIPS } from "../api/useIPS";
-import { LoadingIndicator } from "./LoadingIndicator";
 
 const StyledErrorMessage = styled.span`
   color: red;
@@ -76,63 +73,59 @@ const EnterButton = styled(MuiButton)`
   }
 `;
 
-export const IPSForm = () => {
+export const IPSForm = ({ hasError, ipsPayload, onValidate }) => {
   const [enteredDateOfBirth, setEnteredDateOfBirth] = useState(null);
-  const [payload, setPayload] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-  const {
-    payload: payloadBase64 = "ewogICAgImRhdGVPZkJpcnRoIjogIjIwMjItMTItMTIiCn0=",
-  } = useParams();
-  const navigate = useNavigate();
-
-  const { data: ipsPayload, isLoading } = useIPS({ url: payload?.url });
-
-  useEffect(() => {
-    const payloadString = atob(payloadBase64);
-    setPayload(JSON.parse(payloadString));
-  }, [payloadBase64]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const patient = ipsPayload.entry.find(entry => entry.resource.resourceType === 'Patient');
-    if (patient.birthDate === enteredDateOfBirth) {
-      setErrorMessage(null);
-      navigate(`/jsonViewer?url=${btoa(payload.url)}`);
+    const patient = ipsPayload.entry.find(
+      (entry) => entry.resource.resourceType === "Patient"
+    );
+    console.log('patient', patient);
+    console.log('enteredDateOfBirth', enteredDateOfBirth)
+    if (patient?.resource?.birthDate === enteredDateOfBirth) {
+      onValidate();
       return;
     }
 
     setErrorMessage("Date of birth does not match");
   };
 
-  if (isLoading) {
-    return <LoadingIndicator />;
-  }
-
   return (
     <SearchFormContainer>
       <FormContainer>
         <FormWrapper>
           <h1>International patient summary</h1>
-          <p>
-            Please enter the patient date of birth to access the International
-            Patient Summary
-          </p>
-          <Form onSubmit={handleSubmit}>
-            <DateField
-              fullWidth={false}
-              width="30px"
-              style={{ width: 300 }}
-              onChange={(event) => {
-                const date = format(parseISO(event.target.value), "yyyy-dd-MM");
-                setEnteredDateOfBirth(date);
-              }}
-              errorMessage={errorMessage}
-            />
-            <EnterButton type="submit">Enter</EnterButton>
-          </Form>
-          {!!errorMessage && (
-            <StyledErrorMessage>{errorMessage}</StyledErrorMessage>
+          {!!hasError ? (
+            <StyledErrorMessage>IPS cannot be loaded</StyledErrorMessage>
+          ) : (
+            <>
+              <p>
+                Please enter the patient date of birth to access the
+                International Patient Summary
+              </p>
+              <Form onSubmit={handleSubmit}>
+                <DateField
+                  fullWidth={false}
+                  width="30px"
+                  style={{ width: 300 }}
+                  onChange={(event) => {
+                    const date = format(
+                      parseISO(event.target.value),
+                      "yyyy-MM-dd"
+                    );
+                    setEnteredDateOfBirth(date);
+                  }}
+                  errorMessage={errorMessage}
+                />
+                <EnterButton type="submit">Enter</EnterButton>
+              </Form>
+              {!!errorMessage && (
+                <StyledErrorMessage>{errorMessage}</StyledErrorMessage>
+              )}
+            </>
           )}
         </FormWrapper>
       </FormContainer>
