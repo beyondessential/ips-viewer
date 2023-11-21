@@ -1,5 +1,6 @@
 import { useQuery } from "react-query";
-import { request } from "./request";
+import * as AWS from "@aws-sdk/client-s3";
+// import { request } from "./request";
 
 // const SAMPLE_RESULT = {
 //   id: "45d1d8bc-5df8-424d-8454-5277b455d96c",
@@ -643,8 +644,27 @@ import { request } from "./request";
 //   ],
 // };
 
-export const useIPS = ({ url }) => {
-  url = 's3://bes-tamanu-ips-public/ips-demo/IPS_58170297-d96b-45b6-bb27-ba9522b87be2_1700456070120.json';
-  return useQuery([url], () => request(url), { enabled: !!url });
+const CONFIG = {
+  region: "ap-southeast-2",
+  bucketName: "bes-tamanu-ips-public",
+  bucketPath: "ips-demo",
+  filePath: "IPS_58170297-d96b-45b6-bb27-ba9522b87be2_1700456070120.json",
+};
+
+export const useIPS = async () => {
+  return useQuery(
+    [CONFIG.filePath],
+    () => {
+      const client = new AWS.S3({ region: CONFIG.region });
+      return client.send(
+        new AWS.GetObjectCommand({
+          Bucket: CONFIG.bucketName,
+          Key: CONFIG.filePath,
+        })
+      );
+    },
+    { enabled: !!CONFIG.filePath }
+  );
+
   // return { data: SAMPLE_RESULT };
 };
