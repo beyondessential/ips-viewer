@@ -33,4 +33,4 @@ jobs:
           role-session-name: GHA@IPS=Viewer
 
       - name: Upload
-        run: aws s3 sync build s3://bes-tamanu-ips-public/viewer/ --cache-control max-age=1 --recursive
+        run: aws s3 sync build s3://bes-tamanu-ips-public/viewer/ --cache-control max-age=1
