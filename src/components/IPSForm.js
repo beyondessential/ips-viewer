@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import MuiButton from "@material-ui/core/Button";
@@ -83,7 +83,7 @@ export const IPSForm = () => {
   const {
     payload: payloadBase64 = "ewogICAgImRhdGVPZkJpcnRoIjogIjIwMjItMTItMTIiCn0=",
   } = useParams();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const { data: ipsPayload, isLoading } = useIPS({ url: payload?.url });
 
@@ -98,7 +98,7 @@ export const IPSForm = () => {
     const patient = ipsPayload.entry.find(entry => entry.resource.resourceType === 'Patient');
     if (patient.birthDate === enteredDateOfBirth) {
       setErrorMessage(null);
-      // navigate(`/jsonViewer?url=${btoa(payload.url)}`);
+      navigate(`/jsonViewer?url=${btoa(payload.url)}`);
       return;
     }
 
