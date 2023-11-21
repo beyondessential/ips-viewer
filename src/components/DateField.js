@@ -110,17 +110,19 @@ export const DateField = ({
   }, [value, format]);
 
   return (
-    <CustomIconTextInput
-      type={type}
-      value={currentText}
-      onChange={onValueChange}
-      InputProps={{
-        // Set max property on HTML input element to force 4-digit year value (max year being 9999)
-        inputProps: { max, min, ...inputProps },
-      }}
-      style={isPlaceholder ? { color: "black" } : undefined}
-      {...props}
-    />
+    <>
+      <CustomIconTextInput
+        type={type}
+        value={currentText}
+        onChange={onValueChange}
+        InputProps={{
+          // Set max property on HTML input element to force 4-digit year value (max year being 9999)
+          inputProps: { max, min, ...inputProps },
+        }}
+        style={isPlaceholder ? { color: "black" } : undefined}
+        {...props}
+      />
+    </>
   );
 };
 

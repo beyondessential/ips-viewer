@@ -7,6 +7,7 @@
     "@material-ui/icons": "^4.11.2",
     "axios": "^0.21.1",
     "date-fns": "^2.22.1",
+    "file-saver": "^2.0.5",
     "html-react-parser": "^1.2.8",
     "jsoneditor": "^9.10.4",
     "prettier": "^2.3.1",

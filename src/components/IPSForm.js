@@ -7,6 +7,11 @@ import { format, parseISO } from "date-fns";
 
 import { DateField } from "./DateField";
 import { backgroundImage } from "../images";
+import { useIPS } from "../api/useIPS";
+
+const StyledErrorMessage = styled.span`
+  color: red;
+`;
 
 const SearchFormContainer = styled.div`
   display: flex;
@@ -22,6 +27,12 @@ const FormContainer = styled.div`
   margin-top: auto;
   margin-bottom: auto;
   margin-left: 10px;
+`;
+
+const FormWrapper = styled.div`
+  width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 const ImageContainer = styled.div`
@@ -49,7 +60,7 @@ const EnterButton = styled(MuiButton)`
   color: white;
   background: ${(props) => props.theme.palette.primary.main};
   width: 6.5rem;
-  border-radius: 0 3px 3px 0;
+  border-radius: 3px;
   align-self: stretch;
   margin-left: 20px;
 
@@ -67,10 +78,13 @@ const EnterButton = styled(MuiButton)`
 export const IPSForm = () => {
   const [enteredDateOfBirth, setEnteredDateOfBirth] = useState(null);
   const [payload, setPayload] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const {
     payload: payloadBase64 = "ewogICAgImRhdGVPZkJpcnRoIjogIjIwMjItMTItMTIiCn0=",
   } = useParams();
   const navigate = useNavigate();
+
+  const { data: ipsPayload, isLoading } = useIPS({ url: payload?.url });
 
   useEffect(() => {
     const payloadString = atob(payloadBase64);
@@ -80,28 +94,46 @@ export const IPSForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (payload.dateOfBirth === enteredDateOfBirth) {
+    const patient = ipsPayload.entry.find(entry => entry.resource.resourceType === 'Patient');
+    if (patient.birthDate === enteredDateOfBirth) {
+      setErrorMessage(null);
       navigate(`/jsonViewer?url=${btoa(payload.url)}`);
+      return;
     }
+
+    setErrorMessage("Date of birth does not match");
   };
+
+  if (isLoading) {
+    return <span>Loading...</span>
+  }
 
   return (
     <SearchFormContainer>
       <FormContainer>
-        <h1>International patient summary</h1>
-        <p>
-          Please enter the patient date of birth to access the International
-          Patient Summary
-        </p>
-        <Form onSubmit={handleSubmit}>
-          <DateField
-            onChange={(event) => {
-              const date = format(parseISO(event.target.value), "yyyy-dd-MM");
-              setEnteredDateOfBirth(date);
-            }}
-          />
-          <EnterButton type="submit">Enter</EnterButton>
-        </Form>
+        <FormWrapper>
+          <h1>International patient summary</h1>
+          <p>
+            Please enter the patient date of birth to access the International
+            Patient Summary
+          </p>
+          <Form onSubmit={handleSubmit}>
+            <DateField
+              fullWidth={false}
+              width="30px"
+              style={{ width: 300 }}
+              onChange={(event) => {
+                const date = format(parseISO(event.target.value), "yyyy-dd-MM");
+                setEnteredDateOfBirth(date);
+              }}
+              errorMessage={errorMessage}
+            />
+            <EnterButton type="submit">Enter</EnterButton>
+          </Form>
+          {!!errorMessage && (
+            <StyledErrorMessage>{errorMessage}</StyledErrorMessage>
+          )}
+        </FormWrapper>
       </FormContainer>
       <ImageContainer />
     </SearchFormContainer>

@@ -3,14 +3,14 @@ import FetchError from "./FetchError";
 
 const TIMEOUT = 45 * 1000; // 45 seconds
 
-export const request = async (apiUrl, endpoint, options) => {
+export const request = async (url, options, isBlob = false) => {
   try {
-    const response = await axios(`${apiUrl}/${endpoint}`, {
+    const response = await axios(url, {
       TIMEOUT,
       method: "GET",
       ...options,
     });
-    return response.data;
+    return isBlob ? response.blob() : response.data;
   } catch (error) {
     // normalise error messages
     if (error.response) {
