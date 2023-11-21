@@ -10,7 +10,7 @@
 
 # production
 /build
-/viewer
+/viewer/**
 
 # misc
 .DS_Store
