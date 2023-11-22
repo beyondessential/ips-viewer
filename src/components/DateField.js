@@ -1,29 +1,9 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import { isAfter, isBefore, parse } from "date-fns";
 import PropTypes from "prop-types";
 import { TextInput } from "./TextInput";
 
-// This component is pretty tricky! It has to keep track of two layers of state:
-//
-//  - actual date, received from `value` and emitted through `onChange`
-//    this is always in RFC3339 format (which looks like "1996-12-19T16:39:57")
-//
-//  - currently entered date, which might be only partially entered
-//    this is a string in whatever format that has been given to the
-//    component through the `format` prop.
-//
-// As the string formats don't contain timezone information, the RFC3339 dates are
-// always in UTC - leaving it up to the local timezone can introduce some wacky
-// behaviour as the dates get converted back and forth.
-//
-// Care has to be taken with setting the string value, as the native date control
-// has some unusual input handling (switching focus between day/month/year etc) that
-// a value change will interfere with.
-
-// Here I have made a data URL for the new calendar icon. The existing calander icon was a psuedo element
-// in the user agent shadow DOM. In order to add a new icon I had to make the psuedo element invisible
-// a new icon I had to make the psuedo element invisible and render a replacement on top using svg data url.
 const CustomIconTextInput = styled(TextInput)`
   input::-webkit-calendar-picker-indicator {
     color: rgba(0, 0, 0, 0);
@@ -33,12 +13,17 @@ const CustomIconTextInput = styled(TextInput)`
     border-radius: 50%;
     margin-left: 0.5rem;
   }
-`;
 
-function fromRFC3339(rfc3339Date, format) {
-  if (!rfc3339Date) return "";
-  return ""; //TODO
-}
+  ${(props) =>
+    props.$isPlaceholder
+      ? `
+        .MuiInputBase-input {
+          color: grey;
+        }
+      `
+      : ""}
+  }
+`;
 
 export const DateField = ({
   type = "date",
@@ -46,16 +31,13 @@ export const DateField = ({
   format = "yyyy-MM-dd",
   onChange,
   name,
-  placeholder,
   max = "9999-12-31",
   min,
-  saveDateAsString = false,
-  arrows = false,
   inputProps = {},
   ...props
 }) => {
-  const [currentText, setCurrentText] = useState(fromRFC3339(value, format));
-  const [isPlaceholder, setIsPlaceholder] = useState(!value);
+  const [currentText, setCurrentText] = useState('');
+  const [isPlaceholder, setIsPlaceholder] = useState(true);
 
   const onValueChange = useCallback(
     (event) => {
@@ -79,13 +61,16 @@ export const DateField = ({
       }
 
       let outputValue;
-      if (saveDateAsString) {
-        if (type === "date") outputValue = date;
-        else if (["time", "datetime-local"].includes(type)) outputValue = date;
-      } else {
+      try {
         outputValue = date.toISOString();
+      } catch (e) {
+        setIsPlaceholder(true);
       }
-      setIsPlaceholder(false);
+
+      if (outputValue) {
+        setIsPlaceholder(false);
+      }
+      
       setCurrentText(formattedValue);
       if (outputValue === "Invalid date") {
         onChange({ target: { value: "", name } });
@@ -94,20 +79,8 @@ export const DateField = ({
 
       onChange({ target: { value: outputValue, name } });
     },
-    [onChange, format, name, min, max, saveDateAsString, type]
+    [onChange, format, name, min, max]
   );
-
-  useEffect(() => {
-    const formattedValue = fromRFC3339(value, format);
-    if (value && formattedValue) {
-      setCurrentText(formattedValue);
-      setIsPlaceholder(false);
-    }
-    return () => {
-      setCurrentText("");
-      setIsPlaceholder(true);
-    };
-  }, [value, format]);
 
   return (
     <>
@@ -119,7 +92,7 @@ export const DateField = ({
           // Set max property on HTML input element to force 4-digit year value (max year being 9999)
           inputProps: { max, min, ...inputProps },
         }}
-        style={isPlaceholder ? { color: "black" } : undefined}
+        $isPlaceholder={isPlaceholder}
         {...props}
       />
     </>

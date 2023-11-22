@@ -83,10 +83,12 @@ export const IPSForm = ({ hasError, ipsPayload, onValidate }) => {
     const patient = ipsPayload.entry.find(
       (entry) => entry.resource.resourceType === "Patient"
     );
-    console.log('patient', patient);
-    console.log('enteredDateOfBirth', enteredDateOfBirth)
-    console.log('patient?.resource?.birthDate', patient?.resource?.birthDate);
-    if (patient?.resource?.birthDate === enteredDateOfBirth) {
+
+    const date = format(
+      parseISO(enteredDateOfBirth),
+      "yyyy-MM-dd"
+    );
+    if (patient?.resource?.birthDate === date) {
       onValidate();
       return;
     }
@@ -113,11 +115,7 @@ export const IPSForm = ({ hasError, ipsPayload, onValidate }) => {
                   width="30px"
                   style={{ width: 300 }}
                   onChange={(event) => {
-                    const date = format(
-                      parseISO(event.target.value),
-                      "yyyy-MM-dd"
-                    );
-                    setEnteredDateOfBirth(date);
+                    setEnteredDateOfBirth(event.target.value);
                   }}
                   errorMessage={errorMessage}
                 />
