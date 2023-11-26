@@ -7,7 +7,7 @@ import { LoadingIndicator } from "./LoadingIndicator";
 
 export const Main = () => {
   const [hasPayloadError, setHasPayloadError] = useState(false);
-  const [validated, setValidated] = useState(true);
+  const [validated, setValidated] = useState(false);
   const [payload, setPayload] = useState(null);
 
   const hash = window.location.hash;

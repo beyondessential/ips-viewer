@@ -82,6 +82,10 @@ export const IPSForm = ({ hasError, ipsPayload, onValidate }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    if (!ipsPayload) {
+      return;
+    }
+
     const patient = ipsPayload.entry.find(
       (entry) => entry.resource.resourceType === "Patient"
     );
