@@ -1,2 +1,2 @@
 # ips-viewer
-The thin viewer for international patient summaries
+Code gets deployed automatically to https://public.tamanu.io/viewer on push to main
