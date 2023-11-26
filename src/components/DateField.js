@@ -2,7 +2,16 @@ import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import { isAfter, isBefore, parse } from "date-fns";
 import PropTypes from "prop-types";
+
 import { TextInput } from "./TextInput";
+import { OuterLabelFieldWrapper } from "./OuterLabelFieldWrapper";
+import * as COLORS from "../constants/colors";
+
+const StyledError = styled.div`
+  color: ${COLORS.RED};
+  font-size: 12px;
+  font-weight: 500;
+`;
 
 const CustomIconTextInput = styled(TextInput)`
   input::-webkit-calendar-picker-indicator {
@@ -31,12 +40,15 @@ export const DateField = ({
   format = "yyyy-MM-dd",
   onChange,
   name,
+  label,
+  required,
   max = "9999-12-31",
   min,
   inputProps = {},
+  error,
   ...props
 }) => {
-  const [currentText, setCurrentText] = useState('');
+  const [currentText, setCurrentText] = useState("");
   const [isPlaceholder, setIsPlaceholder] = useState(true);
 
   const onValueChange = useCallback(
@@ -70,7 +82,7 @@ export const DateField = ({
       if (outputValue) {
         setIsPlaceholder(false);
       }
-      
+
       setCurrentText(formattedValue);
       if (outputValue === "Invalid date") {
         onChange({ target: { value: "", name } });
@@ -83,7 +95,10 @@ export const DateField = ({
   );
 
   return (
-    <>
+    <OuterLabelFieldWrapper
+      label={label}
+      required={required}
+    >
       <CustomIconTextInput
         type={type}
         value={currentText}
@@ -93,9 +108,11 @@ export const DateField = ({
           inputProps: { max, min, ...inputProps },
         }}
         $isPlaceholder={isPlaceholder}
+        hasError={!!error}
         {...props}
       />
-    </>
+      {!!error && <StyledError>{`*${error}`}</StyledError>}
+    </OuterLabelFieldWrapper>
   );
 };
 

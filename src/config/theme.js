@@ -19,6 +19,9 @@ export const theme = {
     fontFamily: ["Poppins", '"Helvetica Neue"', "Arial", "sans-serif"].join(
       ","
     ),
+    button: {
+      textTransform: 'none'
+    }
   },
   shape: { borderRadius: 3 },
   overrides: {

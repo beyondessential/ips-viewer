@@ -3,8 +3,8 @@ import ReactJson from "react-json-view";
 import styled from "styled-components";
 import { saveAs } from "file-saver";
 import Button from "@material-ui/core/Button";
-import DownloadIcon from "@material-ui/icons/GetApp";
-import CopyIcon from "@material-ui/icons/FileCopy";
+import DownloadIcon from '@mui/icons-material/Download';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 const StyledCopyButton = styled(Button)`
   float: right;
@@ -55,7 +55,7 @@ export const IPSResult = ({ ipsPayload }) => {
             navigator.clipboard.writeText(JSON.stringify(ipsPayload));
           }}
         >
-          <CopyIcon />
+          <ContentCopyIcon />
           Copy
         </StyledCopyButton>
       </StyledButtonsContainer>

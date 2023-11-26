@@ -2,14 +2,18 @@ import React from "react";
 import styled from "styled-components";
 import { TamanuLogo } from "../assets/TamanuLogo";
 
-const StyledTamanuLogo = styled(TamanuLogo)`
+const NavBarWrapper = styled.div`
   position: absolute;
-  top: 0px;
-  left: 0px;
+  top: 20px;
+  left: 10px;
   height: 100px;
   width: auto;
 `;
 
 export const NavBar = () => {
-  return <StyledTamanuLogo />;
+  return (
+    <NavBarWrapper>
+      <TamanuLogo />
+    </NavBarWrapper>
+  );
 };

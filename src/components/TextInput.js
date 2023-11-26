@@ -1,6 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
-import MuiTextField from '@material-ui/core/TextField';
+import React from "react";
+import styled from "styled-components";
+import MuiTextField from "@material-ui/core/TextField";
+
+import * as COLORS from "../constants/colors";
 
 export const StyledTextField = styled(MuiTextField)`
   .MuiInputBase-root {
@@ -34,9 +36,15 @@ export const StyledTextField = styled(MuiTextField)`
   }
 
   // Hover state
+  .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+    border-color: ${(props) =>
+      props.borderColor || props.theme.palette.grey["400"]};
+  }
+
   .MuiOutlinedInput-root:not(.Mui-disabled):hover
     .MuiOutlinedInput-notchedOutline {
-    border-color: ${(props) => props.theme.palette.grey["400"]};
+    border-color: ${(props) =>
+      props.borderColor || props.theme.palette.grey["400"]};
   }
 
   // Focused state
@@ -64,6 +72,11 @@ export const StyledTextField = styled(MuiTextField)`
   }
 `;
 
-export const TextInput = ({ value = "", label, ...props }) => (
-  <StyledTextField value={value} variant="outlined" {...props} />
+export const TextInput = ({ value = "", label, hasError, ...props }) => (
+  <StyledTextField
+    value={value}
+    variant="outlined"
+    borderColor={hasError ? COLORS.RED : undefined}
+    {...props}
+  />
 );

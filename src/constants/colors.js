@@ -1,6 +1,8 @@
 // Primary & Secondary colors
 export const BLUE = "#0066BF";
 export const YELLOW = "#FFE600";
+export const WHITE = "#000000";
+export const RED = '#F76853';
 
 // Font
 export const FONT_DARKGREY = "#2C3236";

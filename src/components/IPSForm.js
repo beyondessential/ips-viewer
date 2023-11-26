@@ -61,6 +61,8 @@ const EnterButton = styled(MuiButton)`
   border-radius: 3px;
   align-self: stretch;
   margin-left: 20px;
+  height: 44px;
+  top: 20px;
 
   &:hover {
     background: #007acd;
@@ -84,16 +86,13 @@ export const IPSForm = ({ hasError, ipsPayload, onValidate }) => {
       (entry) => entry.resource.resourceType === "Patient"
     );
 
-    const date = format(
-      parseISO(enteredDateOfBirth),
-      "yyyy-MM-dd"
-    );
+    const date = format(parseISO(enteredDateOfBirth), "yyyy-MM-dd");
     if (patient?.resource?.birthDate === date) {
       onValidate();
       return;
     }
 
-    setErrorMessage("Date of birth does not match");
+    setErrorMessage("Incorrect date of birth");
   };
 
   return (
@@ -111,19 +110,18 @@ export const IPSForm = ({ hasError, ipsPayload, onValidate }) => {
               </p>
               <Form onSubmit={handleSubmit}>
                 <DateField
+                  label="Patient date of birth"
+                  required
                   fullWidth={false}
                   width="30px"
                   style={{ width: 300 }}
                   onChange={(event) => {
                     setEnteredDateOfBirth(event.target.value);
                   }}
-                  errorMessage={errorMessage}
+                  error={errorMessage}
                 />
                 <EnterButton type="submit">Enter</EnterButton>
               </Form>
-              {!!errorMessage && (
-                <StyledErrorMessage>{errorMessage}</StyledErrorMessage>
-              )}
             </>
           )}
         </FormWrapper>
