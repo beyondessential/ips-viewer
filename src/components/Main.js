@@ -6,7 +6,10 @@ import { useIPS } from "../api/useIPS";
 import { LoadingIndicator } from "./LoadingIndicator";
 
 async function decryptData(key, encryptedData) {
-  const decrypted = await jose.compactDecrypt(encryptedData, key);
+  const decrypted = await jose.compactDecrypt(
+    encryptedData,
+    jose.base64url.decode(key)
+  );
 
   console.log("decrypted", decrypted);
   return decrypted;
@@ -44,7 +47,7 @@ export const Main = () => {
       console.log("payload", payload);
       decryptData(payload.key, ipsPayload);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ipsPayload]);
 
   if (isLoading) {
