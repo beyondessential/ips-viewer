@@ -6,8 +6,7 @@ import { useIPS } from "../api/useIPS";
 import { LoadingIndicator } from "./LoadingIndicator";
 
 async function decryptData(key, encryptedData) {
-  const decrypter = await jose.JWE.createDecrypt(key);
-  const decrypted = await decrypter.decrypt(encryptedData);
+  const decrypted = await jose.compactDecrypt(encryptedData, key);
 
   console.log("decrypted", decrypted);
   return decrypted;
@@ -42,7 +41,7 @@ export const Main = () => {
 
   useEffect(() => {
     if (ipsPayload) {
-      console.log('payload', payload);
+      console.log("payload", payload);
       decryptData(payload.key, ipsPayload);
     }
   }, [ipsPayload]);
