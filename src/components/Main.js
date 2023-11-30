@@ -11,7 +11,11 @@ async function decryptData(key, encryptedData) {
     jose.base64url.decode(key)
   );
 
+  const decryptedText = JSON.parse(decrypted.payload.toString('utf8'));
+
   console.log("decrypted", decrypted);
+  console.log('decryptedText', decryptedText);
+  
   return decrypted;
 }
 
