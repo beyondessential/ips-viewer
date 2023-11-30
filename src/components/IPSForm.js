@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import PropTypes from "prop-types";
 import MuiButton from "@material-ui/core/Button";
 import { format, parseISO } from "date-fns";
 
@@ -75,20 +74,18 @@ const EnterButton = styled(MuiButton)`
   }
 `;
 
-export const IPSForm = ({ hasError, ipsPayload, onValidate }) => {
+export const IPSForm = ({ hasError, ipsObject, onValidate }) => {
   const [enteredDateOfBirth, setEnteredDateOfBirth] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!ipsPayload) {
+    if (!ipsObject) {
       return;
     }
 
-    console.log('ipsPayload', ipsPayload);
-
-    const patient = ipsPayload.entry.find(
+    const patient = ipsObject.entry.find(
       (entry) => entry.resource.resourceType === "Patient"
     );
 
@@ -135,22 +132,4 @@ export const IPSForm = ({ hasError, ipsPayload, onValidate }) => {
       <ImageContainer />
     </SearchFormContainer>
   );
-};
-
-IPSForm.propTypes = {
-  status: PropTypes.string,
-  className: PropTypes.string,
-  value: PropTypes.string,
-  onClear: PropTypes.func,
-  onChange: PropTypes.func,
-  onSubmit: PropTypes.func,
-};
-
-IPSForm.defaultProps = {
-  status: "idle",
-  onClear: () => {},
-  onChange: () => {},
-  onSubmit: () => {},
-  inputValue: null,
-  className: null,
 };

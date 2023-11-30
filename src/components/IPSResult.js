@@ -31,7 +31,7 @@ const StyledContainer = styled.div`
   margin-right: 10px;
 `;
 
-export const IPSResult = ({ ipsPayload }) => {
+export const IPSResult = ({ ipsObject }) => {
   return (
     <>
       <StyledButtonsContainer>
@@ -39,7 +39,7 @@ export const IPSResult = ({ ipsPayload }) => {
           variant="contained"
           color="primary"
           onClick={() => {
-            const blob = new Blob([JSON.stringify(ipsPayload)], {
+            const blob = new Blob([JSON.stringify(ipsObject)], {
               type: "application/json;charset=utf-8",
             });
             saveAs(blob, "IPS");
@@ -52,7 +52,7 @@ export const IPSResult = ({ ipsPayload }) => {
           variant="outlined"
           color="primary"
           onClick={() => {
-            navigator.clipboard.writeText(JSON.stringify(ipsPayload));
+            navigator.clipboard.writeText(JSON.stringify(ipsObject));
           }}
         >
           <ContentCopyIcon />
@@ -61,7 +61,7 @@ export const IPSResult = ({ ipsPayload }) => {
       </StyledButtonsContainer>
 
       <StyledContainer>
-        <ReactJson src={ipsPayload} />
+        <ReactJson src={ipsObject} />
       </StyledContainer>
     </>
   );

@@ -1,25 +1,16 @@
 import React, { useEffect, useState } from "react";
 import * as jose from "jose";
+
 import { IPSResult } from "./IPSResult";
 import { IPSForm } from "./IPSForm";
 import { useIPS } from "../api/useIPS";
 import { LoadingIndicator } from "./LoadingIndicator";
 
-async function decryptData(key, encryptedData) {
-  const decrypted = await jose.compactDecrypt(
-    encryptedData,
-    jose.base64url.decode(key)
-  );
-
-  console.log("decrypted", decrypted);
-
-  return decrypted;
-}
-
 export const Main = () => {
   const [hasPayloadError, setHasPayloadError] = useState(false);
   const [validated, setValidated] = useState(false);
   const [payload, setPayload] = useState(null);
+  const [ipsObject, setIpsObject] = useState(null);
 
   const hash = window.location.hash;
   const payloadBase64 = hash.replace("#shlink:/", "");
@@ -45,7 +36,16 @@ export const Main = () => {
 
   useEffect(() => {
     if (ipsPayload) {
-      console.log("payload", payload);
+      async function decryptData(key, encryptedData) {
+        const decrypted = await jose.compactDecrypt(
+          encryptedData,
+          jose.base64url.decode(key)
+        );
+
+        const decryptedText = new TextDecoder().decode(decrypted.plaintext);
+        setIpsObject(JSON.parse(decryptedText));
+      }
+
       decryptData(payload.key, ipsPayload);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,11 +56,11 @@ export const Main = () => {
   }
 
   return validated ? (
-    <IPSResult ipsPayload={ipsPayload} />
+    <IPSResult ipsObject={ipsObject} />
   ) : (
     <IPSForm
       hasError={hasLoadIPSError || hasPayloadError}
-      ipsPayload={ipsPayload}
+      ipsObject={ipsObject}
       onValidate={() => setValidated(true)}
     />
   );
