@@ -44,6 +44,7 @@ export const Main = () => {
       console.log("payload", payload);
       decryptData(payload.key, ipsPayload);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ipsPayload]);
 
   if (isLoading) {
