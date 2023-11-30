@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from "react";
-
+import * as jose from "jose";
 import { IPSResult } from "./IPSResult";
 import { IPSForm } from "./IPSForm";
 import { useIPS } from "../api/useIPS";
 import { LoadingIndicator } from "./LoadingIndicator";
+
+async function decryptData(key, encryptedData) {
+  const decrypter = await jose.JWE.createDecrypt(key);
+  const decrypted = await decrypter.decrypt(encryptedData);
+
+  console.log("decrypted", decrypted);
+  return decrypted;
+}
 
 export const Main = () => {
   const [hasPayloadError, setHasPayloadError] = useState(false);
@@ -11,7 +19,7 @@ export const Main = () => {
   const [payload, setPayload] = useState(null);
 
   const hash = window.location.hash;
-  const payloadBase64 = hash.replace('#shlink:/', '');
+  const payloadBase64 = hash.replace("#shlink:/", "");
 
   const {
     data: ipsPayload,
@@ -31,6 +39,13 @@ export const Main = () => {
       setPayload(JSON.parse(payloadString));
     }
   }, [payloadBase64]);
+
+  useEffect(() => {
+    if (ipsPayload) {
+      console.log('payload', payload);
+      decryptData(payload.key, ipsPayload);
+    }
+  }, [ipsPayload]);
 
   if (isLoading) {
     return <LoadingIndicator />;
