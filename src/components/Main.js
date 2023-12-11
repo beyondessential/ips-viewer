@@ -24,7 +24,7 @@ export const Main = () => {
   useEffect(() => {
     let payloadString;
     try {
-      payloadString = atob(payloadBase64);
+      payloadString = jose.base64url.decode(payloadBase64);
     } catch (e) {
       setHasPayloadError(true);
     }
