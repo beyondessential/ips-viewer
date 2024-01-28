@@ -85,6 +85,11 @@ export const IPSForm = ({ hasError, ipsObject, onValidate }) => {
       return;
     }
 
+    if (!enteredDateOfBirth) {
+      setErrorMessage("Required");
+      return;
+    }
+
     const patient = ipsObject.entry.find(
       (entry) => entry.resource.resourceType === "Patient"
     );
